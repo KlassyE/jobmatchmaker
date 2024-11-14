@@ -6,7 +6,7 @@ interface JobCardProps {
   location: string;
   salary: string;
   description: string;
-  match: number;
+  match?: number; // Make match optional with a default value
 }
 
 export const JobCard = ({
@@ -15,7 +15,7 @@ export const JobCard = ({
   location,
   salary,
   description,
-  match,
+  match = 80, // Default match percentage if not provided
 }: JobCardProps) => {
   return (
     <div className="glass-card rounded-xl p-6 hover-scale">
