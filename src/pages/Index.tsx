@@ -5,42 +5,29 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Search } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
-
-const mockJobs = [
-  {
-    title: "Senior Frontend Developer",
-    company: "Apple",
-    location: "Cupertino, CA",
-    salary: "150k-200k",
-    description:
-      "We are looking for a Senior Frontend Developer to join our team and help build the next generation of web applications.",
-    match: 95,
-  },
-  {
-    title: "UI/UX Designer",
-    company: "Google",
-    location: "Mountain View, CA",
-    salary: "130k-180k",
-    description:
-      "Join our design team to create beautiful and intuitive user interfaces for millions of users worldwide.",
-    match: 88,
-  },
-];
+import { searchJobs, LinkedInJob } from "@/services/linkedin";
 
 const Index = () => {
   const [hasResume, setHasResume] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
+  const [jobs, setJobs] = useState<LinkedInJob[]>([]);
   const { toast } = useToast();
 
   const handleSearch = async () => {
     setIsSearching(true);
     try {
-      // Here you would implement the actual job scraping logic
+      const fetchedJobs = await searchJobs("software engineer");
+      setJobs(fetchedJobs);
       toast({
-        title: "Searching for jobs",
-        description: "Scanning multiple job boards for relevant positions...",
+        title: "Jobs found!",
+        description: `Found ${fetchedJobs.length} matching positions.`,
       });
-      await new Promise(resolve => setTimeout(resolve, 2000)); // Simulated delay
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to fetch jobs. Please try again later.",
+        variant: "destructive",
+      });
     } finally {
       setIsSearching(false);
     }
@@ -75,12 +62,12 @@ const Index = () => {
 
             <section className="mb-12">
               <h2 className="text-2xl font-semibold mb-6 fade-in">
-                Recommended Jobs
+                Found Jobs
               </h2>
               <div className="grid gap-6 md:grid-cols-2">
-                {mockJobs.map((job, index) => (
+                {jobs.map((job, index) => (
                   <div
-                    key={index}
+                    key={job.id}
                     className="fade-in"
                     style={{ animationDelay: `${index * 0.1}s` }}
                   >
