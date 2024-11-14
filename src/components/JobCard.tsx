@@ -4,9 +4,9 @@ interface JobCardProps {
   title: string;
   company: string;
   location: string;
-  salary: string;
+  salary?: string; // Make salary optional
   description: string;
-  match?: number; // Make match optional with a default value
+  match?: number;
 }
 
 export const JobCard = ({
@@ -15,7 +15,7 @@ export const JobCard = ({
   location,
   salary,
   description,
-  match = 80, // Default match percentage if not provided
+  match = 80,
 }: JobCardProps) => {
   return (
     <div className="glass-card rounded-xl p-6 hover-scale">
@@ -31,10 +31,12 @@ export const JobCard = ({
               <MapPin className="w-4 h-4" />
               {location}
             </div>
-            <div className="flex items-center gap-1">
-              <DollarSign className="w-4 h-4" />
-              {salary}
-            </div>
+            {salary && (
+              <div className="flex items-center gap-1">
+                <DollarSign className="w-4 h-4" />
+                {salary}
+              </div>
+            )}
           </div>
         </div>
         <div className="bg-success/10 px-3 py-1 rounded-full">
