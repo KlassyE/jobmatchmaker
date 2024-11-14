@@ -1,7 +1,11 @@
 import { useState } from "react";
 import { Upload } from "lucide-react";
 
-export const ResumeUpload = () => {
+interface ResumeUploadProps {
+  onUploadSuccess: () => void;
+}
+
+export const ResumeUpload = ({ onUploadSuccess }: ResumeUploadProps) => {
   const [isDragging, setIsDragging] = useState(false);
   const [file, setFile] = useState<File | null>(null);
 
@@ -23,6 +27,15 @@ export const ResumeUpload = () => {
     const files = Array.from(e.dataTransfer.files);
     if (files && files[0]) {
       setFile(files[0]);
+      onUploadSuccess();
+    }
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files && files[0]) {
+      setFile(files[0]);
+      onUploadSuccess();
     }
   };
 
@@ -47,16 +60,11 @@ export const ResumeUpload = () => {
           id="resume-upload"
           className="hidden"
           accept=".pdf,.doc,.docx"
-          onChange={(e) => {
-            const files = e.target.files;
-            if (files && files[0]) {
-              setFile(files[0]);
-            }
-          }}
+          onChange={handleFileChange}
         />
         <label
           htmlFor="resume-upload"
-          className="inline-block px-6 py-2 bg-primary text-white rounded-lg cursor-pointer hover:bg-primary-light transition-colors duration-300"
+          className="inline-block px-6 py-2 bg-primary text-white rounded-lg cursor-pointer hover:bg-primary/90 transition-colors duration-300"
         >
           Browse Files
         </label>
