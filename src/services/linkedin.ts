@@ -1,6 +1,16 @@
 import axios from 'axios';
 
 const LINKEDIN_API_URL = 'https://api.linkedin.com/v2';
+const CLIENT_SECRET = 'WPL_AP1.W9MOJVHgIcFW6IkV.FZxxmg==';
+
+// Create an authenticated axios instance
+const linkedInClient = axios.create({
+  baseURL: LINKEDIN_API_URL,
+  headers: {
+    'Authorization': `Bearer ${CLIENT_SECRET}`,
+    'Content-Type': 'application/json',
+  }
+});
 
 export interface LinkedInJob {
   id: string;
@@ -13,14 +23,16 @@ export interface LinkedInJob {
 }
 
 export const searchJobs = async (keywords: string): Promise<LinkedInJob[]> => {
-  // Note: This is a placeholder implementation
-  // In a real application, you would need to:
-  // 1. Register your app with LinkedIn
-  // 2. Implement OAuth 2.0 flow
-  // 3. Use proper API credentials
-  
   try {
-    // Simulated API response for development
+    const response = await linkedInClient.get('/jobs/search', {
+      params: {
+        keywords,
+        format: 'json'
+      }
+    });
+    
+    // For now, keep the mock data until we verify the API connection
+    // In production, you would transform response.data to match the LinkedInJob interface
     return [
       {
         id: '1',
