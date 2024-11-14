@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const LINKEDIN_API_URL = 'https://api.linkedin.com/v2';
-const CLIENT_SECRET = 'WPL_AP1.W9MOJVHgIcFW6IkV.FZxxmg==';
+const CLIENT_SECRET = import.meta.env.VITE_LINKEDIN_CLIENT_SECRET;
 
 // Create an authenticated axios instance
 const linkedInClient = axios.create({
